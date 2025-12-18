@@ -5,7 +5,7 @@ version = "0.0.1"
 license = { text = "MIT License (wrapper) + SHARP License (vendored library)" }
 readme = "README.md"
 authors = [
-    { name = "Andrea Pozzetti", email = "pznodes@gmail.com" }
+    { name = "Andrea Pozzetti", email = "andrea@pozzetti.it" }
 ]
 dependencies = [
     "torch>=2.0.0",
