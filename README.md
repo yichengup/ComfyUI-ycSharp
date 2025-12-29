@@ -30,6 +30,12 @@ Model auto-downloads on first run. For offline use, place `sharp_2572gikvuh.pt` 
 
 Images with EXIF data get focal length auto-calculated when using the Load Image with EXIF node.
 
+## Community
+
+Questions or feature requests? Open a [Discussion](https://github.com/PozzettiAndrea/ComfyUI-Sharp/discussions) on GitHub.
+
+Join the [Comfy3D Discord](https://discord.gg/PN743tE5) for help, updates, and chat about 3D workflows in ComfyUI.
+
 ## Credits
 
 Thanks to Apple for releasing SHARP as open source.
