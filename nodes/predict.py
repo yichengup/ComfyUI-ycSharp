@@ -58,12 +58,12 @@ class SharpPredict:
             }
         }
 
-    RETURN_TYPES = ("STRING", "EXTRINSICS", "INTRINSICS",)
-    RETURN_NAMES = ("ply_path", "extrinsics", "intrinsics",)
+    RETURN_TYPES = ("STRING", "GAUSSIANS_3D", "EXTRINSICS", "INTRINSICS",)
+    RETURN_NAMES = ("ply_path", "gaussians", "extrinsics", "intrinsics",)
     FUNCTION = "predict"
     CATEGORY = "SHARP"
     OUTPUT_NODE = True
-    DESCRIPTION = "Generate 3D Gaussian Splatting PLY file(s) from image(s) using SHARP. Batch input creates a folder with numbered PLY files."
+    DESCRIPTION = "Generate 3D Gaussian Splatting PLY file(s) from image(s) using SHARP. Batch input creates a folder with numbered PLY files. Outputs both file path and direct Gaussians3D object for flexible downstream processing."
 
     @torch.no_grad()
     def predict(
@@ -111,6 +111,7 @@ class SharpPredict:
             is_batch = True
 
         all_ply_paths = []
+        all_gaussians = []
         all_extrinsics = []
         all_intrinsics = []
 
@@ -146,6 +147,7 @@ class SharpPredict:
             _, metadata = save_ply(gaussians, f_px, (height, width), Path(ply_path))
 
             all_ply_paths.append(ply_path)
+            all_gaussians.append(gaussians)
             all_extrinsics.append(metadata["extrinsic"])
             all_intrinsics.append(metadata["intrinsic"])
 
@@ -156,12 +158,12 @@ class SharpPredict:
 
         # Return values
         if is_batch:
-            # For batch: return folder path, and first image's camera params
+            # For batch: return folder path, first image's gaussians and camera params
             # (assuming all images have same camera - user can override)
-            return (output_path, all_extrinsics[0], all_intrinsics[0],)
+            return (output_path, all_gaussians[0], all_extrinsics[0], all_intrinsics[0],)
         else:
-            # For single image: return PLY path and camera params
-            return (output_path, all_extrinsics[0], all_intrinsics[0],)
+            # For single image: return PLY path, gaussians and camera params
+            return (output_path, all_gaussians[0], all_extrinsics[0], all_intrinsics[0],)
 
     def _predict_image_cached(
         self,
